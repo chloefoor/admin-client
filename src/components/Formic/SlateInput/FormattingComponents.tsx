@@ -113,7 +113,7 @@ export const IFrameButton = (props: IFrameProps) => {
         </Dialog.Title>
         <div className='slate-dialog-body'>
           <label>
-            {t['URL']}
+            {t['Code']}
             <input
               name='url'
               value={url}
