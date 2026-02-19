@@ -618,9 +618,9 @@ export const SlateInput: React.FC<Props> = (props) => {
               <IFrameButton
               icon={CardStackMinusIcon}
               i18n={props.i18n}
-              title={t['Insert link']}
+              title={t['Insert iframe code']}
               onSubmit={(url) => editor.addMark('link', url)}
-              format='link'
+              format='iframe'
             />
             </>
             

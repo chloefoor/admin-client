@@ -94,7 +94,7 @@ export const IFrameButton = (props: IFrameProps) => {
             onMouseDown={(event) => {
               event.preventDefault();
               if (isActive) {
-                Editor.removeMark(editor, 'link');
+                Editor.removeMark(editor, 'iframe'); //this is the one that changed the hover
               } else {
                 setOpen(true);
               }
