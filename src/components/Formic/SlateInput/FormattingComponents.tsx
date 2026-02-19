@@ -55,6 +55,105 @@ export const ColorButton = (props: SlateButtonProps) => {
   );
 };
 
+export interface IFrameProps {
+  i18n: Translations;
+  icon: React.FC;
+  format: string;
+  onSubmit: (url: string) => void;
+  title: string;
+}
+
+{/**IFRAME BUTTON */}
+export const IFrameButton = (props: IFrameProps) => {
+  
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState('');
+
+  const { t } = props.i18n;
+
+  const editor = useSlate();
+
+  const submit = () => {
+    props.onSubmit(url);
+    setUrl('');
+    setOpen(false);
+  };
+
+  // @ts-expect-error
+  const isActive = Editor.marks(editor)?.link;
+
+  return (
+    <Dialog.Root open={open}>
+      <Dialog.Trigger asChild>
+        <ToolbarTooltip
+          // @ts-expect-error
+          content={t.rteToolbar[props.format as string]}
+        >
+          <Button
+            className={`iframe-button unstyled`}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              if (isActive) {
+                Editor.removeMark(editor, 'link');
+              } else {
+                setOpen(true);
+              }
+            }}
+            type='button'
+            aria-label='Insert link'
+          >
+            <props.icon />
+          </Button>
+        </ToolbarTooltip>
+      </Dialog.Trigger>
+      <Dialog.Overlay className='slate-dialog-overlay' />
+      <Dialog.Content className='slate-dialog-content'>
+        <Dialog.Title className='slate-dialog-title'>
+          {props.title}
+        </Dialog.Title>
+        <div className='slate-dialog-body'>
+          <label>
+            {t['URL']}
+            <input
+              name='url'
+              value={url}
+              onChange={(ev) => setUrl(ev.target.value)}
+              onKeyDown={(ev) => {
+                // override the default enter behavior,
+                // which is to submit the parent form
+                if (ev.key === 'Enter') {
+                  ev.preventDefault();
+                  submit();
+                }
+              }}
+            />
+          </label>
+        </div>
+        <div className='slate-dialog-close-bar'>
+          <Dialog.Close asChild>
+            <Button
+              className='unstyled'
+              onClick={() => {
+                setUrl('');
+                setOpen(false);
+              }}
+              role='button'
+            >
+              {t['cancel']}
+            </Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button className='primary' role='button' onClick={() => submit()}>
+              {t['Insert']}
+            </Button>
+          </Dialog.Close>
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+
+};
+
 export interface LinkDialogProps {
   i18n: Translations;
   icon: React.FC;

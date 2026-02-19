@@ -21,6 +21,7 @@ import { Button } from '@radix-ui/themes';
 import { HistoryEditor, withHistory } from 'slate-history';
 import {
   BookmarkIcon,
+  CardStackMinusIcon,
   CodeIcon,
   FontBoldIcon,
   FontItalicIcon,
@@ -48,6 +49,7 @@ import type { SlateButtonProps } from '@ty/ui.ts';
 import {
   ColorButton,
   HighlightColorButton,
+  IFrameButton,
   ImageButton,
   LinkButton,
 } from './FormattingComponents.tsx';
@@ -604,13 +606,24 @@ export const SlateInput: React.FC<Props> = (props) => {
             </>
           )}
           {props.elementTypes.includes('marks') && (
-            <LinkButton
-              icon={Link1Icon}
+            <>
+              <LinkButton
+                icon={Link1Icon}
+                i18n={props.i18n}
+                title={t['Insert link']}
+                onSubmit={(url) => editor.addMark('link', url)}
+                format='link'
+              />
+              {/**TODO IFRAME */}
+              <IFrameButton
+              icon={CardStackMinusIcon}
               i18n={props.i18n}
               title={t['Insert link']}
               onSubmit={(url) => editor.addMark('link', url)}
               format='link'
             />
+            </>
+            
           )}
           {props.elementTypes.includes('images') && (
             <ImageButton

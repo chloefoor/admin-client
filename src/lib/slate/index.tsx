@@ -94,6 +94,11 @@ export const Element = ({
           {children}
         </div>
       );
+    case 'iframe':
+      console.log(element);
+      return(
+        <a href={element.url}>{children}</a>
+      );
     case 'grid':
       return (
         <div

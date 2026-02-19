@@ -15,7 +15,8 @@
 .slate-form .slate-toolbar .block-button,
 .slate-form .slate-toolbar .image-button,
 .slate-form .slate-toolbar .link-button,
-.slate-form .slate-toolbar .mark-button {
+.slate-form .slate-toolbar .mark-button, 
+.slate-form .slate-toolbar .iframe-button{
   display: flex;
   align-items: center;
   justify-content: center;
