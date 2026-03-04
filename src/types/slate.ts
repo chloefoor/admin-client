@@ -27,6 +27,12 @@ export interface ImageData {
   caption?: string;
 }
 
+export interface IFrameData {
+  url: string;
+  size?: ImageSize;
+  //caption?: string;
+}
+
 export type Includes = 'media' | 'annotations' | 'label' | 'description';
 
 export interface SlateEventNodeData {

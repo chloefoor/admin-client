@@ -56,15 +56,131 @@ export const ColorButton = (props: SlateButtonProps) => {
 };
 
 export interface IFrameProps {
+
+  i18n: Translations;
+  icon?: React.FC;
+  onSubmit: (image: ImageData) => void;
+  title: string;
+  hideButton?: boolean;
+  open?: boolean;
+  url?: string;
+  caption?: string;
+  onClose?(): void;
+
+  /*
   i18n: Translations;
   icon: React.FC;
   format: string;
   onSubmit: (url: string) => void;
-  title: string;
+  title: string;*/
 }
 
 {/**IFRAME BUTTON */}
 export const IFrameButton = (props: IFrameProps) => {
+
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState(props.url);
+  //const [caption, setCaption] = useState<string | undefined>(props.caption);
+
+  const { t } = props.i18n;
+
+  const submit = () => {
+    url && props.onSubmit({ url/*, caption*/ });
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (props.open) {
+      setOpen(true);
+    }
+  }, [props.open]);
+
+  return (
+    <Dialog.Root open={open}>
+      {!props.hideButton && (
+        <Dialog.Trigger asChild>
+          <ToolbarTooltip content={props.title}>
+            <Button
+              className='image-button unstyled'
+              onClick={() => setOpen(true)}
+              type='button'
+              aria-label='insert image'
+            >
+              {props.icon && <props.icon />}
+            </Button>
+          </ToolbarTooltip>
+        </Dialog.Trigger>
+      )}
+      <Dialog.Overlay className='slate-dialog-overlay' />
+      <Dialog.Content className='slate-dialog-content'>
+        <Dialog.Title className='slate-dialog-title'>
+          {props.title}
+        </Dialog.Title>
+        <div className='slate-dialog-body'>
+          <label>
+            {t['URL']}
+            <input
+              name='url'
+              value={url}
+              onChange={(ev) => setUrl(ev.target.value)}
+              onKeyDown={(ev) => {
+                // override the default enter behavior,
+                // which is to submit the parent form
+                if (ev.key === 'Enter') {
+                  ev.preventDefault();
+                  submit();
+                }
+              }}
+            />
+          </label>
+          {/*}
+          <label>{t['Caption']}</label>
+          <input
+            name='caption'
+            value={caption}
+            onChange={(ev) => setCaption(ev.target.value)}
+            onKeyDown={(ev) => {
+              // override the default enter behavior,
+              // which is to submit the parent form
+              if (ev.key === 'Enter') {
+                ev.preventDefault();
+                submit();
+              }
+            }}
+          />*/}
+        </div>
+        <div className='slate-dialog-close-bar'>
+          <Dialog.Close asChild>
+            <Button
+              className='unstyled'
+              onClick={() => {
+                setOpen(false);
+                props.onClose && props.onClose();
+              }}
+              role='button'
+            >
+              {t['cancel']}
+            </Button>
+          </Dialog.Close>
+          <Dialog.Close asChild>
+            <Button
+              className='primary'
+              role='button'
+              onClick={() => {
+                submit();
+                setUrl(undefined);
+                //setCaption(undefined);
+                props.onClose && props.onClose();
+              }}
+            >
+              {t['save']}
+            </Button>
+          </Dialog.Close>
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+  /*
   
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState('');
@@ -151,6 +267,7 @@ export const IFrameButton = (props: IFrameProps) => {
       </Dialog.Content>
     </Dialog.Root>
   );
+  */
 
 };
 
@@ -182,7 +299,7 @@ export const LinkButton = (props: LinkDialogProps) => {
   }, [editor.selection]);
 
   const submit = () => {
-    props.onSubmit(url);
+    url && props.onSubmit(url);
     setUrl('');
     setOpen(false);
   };

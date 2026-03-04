@@ -54,7 +54,7 @@ import {
   LinkButton,
 } from './FormattingComponents.tsx';
 import type { ProjectData, Translations } from '@ty/Types.ts';
-import type { ElementTypes, ImageData, AVAEditor } from '@ty/slate.ts';
+import type { ElementTypes, IFrameData, ImageData, AVAEditor } from '@ty/slate.ts';
 import { Element, emptyParagraph, Leaf } from '../../../lib/slate/index.tsx';
 import { FormatTextButton } from '@components/FormatTextButton/FormatTextButton.tsx';
 import { ToolbarTooltip } from './ToolbarTooltip.tsx';
@@ -200,6 +200,38 @@ const insertTableOfContents = (editor: ReactEditor) => {
 
   // @ts-ignore
   Transforms.insertNodes(editor, nodes);
+};
+
+const insertIFrame = (editor: AVAEditor, iframe: IFrameData) => {
+  const nodes = [
+    {
+      type: 'iframe',
+      ...iframe,
+      children: [{ text: '' }],
+    },
+    {
+      type: 'paragraph',
+      children: [{ text: '' }],
+    },
+  ];
+
+  // @ts-ignore
+  Transforms.insertNodes(editor, nodes);
+  /*
+  const nodes = [
+    {
+      type: 'iframe',
+      ...iframe,
+      children: [{ text: '' }],
+    },
+    {
+      type: 'paragraph',
+      children: [{ text: '' }],
+    },
+  ];
+
+  // @ts-ignore
+  Transforms.insertNodes(editor, nodes);*/
 };
 
 const insertImage = (editor: AVAEditor, image: ImageData) => {
@@ -606,32 +638,32 @@ export const SlateInput: React.FC<Props> = (props) => {
             </>
           )}
           {props.elementTypes.includes('marks') && (
-            <>
               <LinkButton
                 icon={Link1Icon}
                 i18n={props.i18n}
                 title={t['Insert link']}
                 onSubmit={(url) => editor.addMark('link', url)}
                 format='link'
-              />
-              {/**TODO IFRAME */}
+              />            
+          )}
+          {props.elementTypes.includes('images') && (
+            <>
+            {/**TODO IFRAME */}
               <IFrameButton
               icon={CardStackMinusIcon}
               i18n={props.i18n}
               title={t['Insert iframe code']}
-              onSubmit={(url) => editor.addMark('link', url)}
-              format='iframe'
+              //onSubmit={(url) => editor.addMark('link', url)} //TODO THIS IS WHERE ONSUBMIT IS 
+              onSubmit={(src) => insertImage(editor, src)}
+              //format='iframe'
             />
-            </>
-            
-          )}
-          {props.elementTypes.includes('images') && (
             <ImageButton
               icon={Images}
               i18n={props.i18n}
               title={t['Insert image']}
               onSubmit={(image) => insertImage(editor, image)}
             />
+            </>
           )}
         </div>
         <Editable

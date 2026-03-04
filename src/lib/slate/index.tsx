@@ -96,8 +96,25 @@ export const Element = ({
       );
     case 'iframe':
       console.log(element);
+      console.log(element.url)
+      return (
+        <div {...attributes} style={style} contentEditable={false}>
+          <RTEImage
+            url={element.url}
+            i18n={i18n}
+            caption={element.caption}
+            scale={element.scale || 100}
+            onChange={onChange}
+            popoverAnchor={popoverAnchor ? popoverAnchor : undefined}
+            element={element}
+            onUpdateImage={updateImage}
+            editor={editor ? (editor as AVAEditor) : undefined}
+          />
+          {children}
+        </div>
+      /*
       return(
-        <a href={element.url}>{children}</a>
+        <a href={element.url}>{children}</a>*/
       );
     case 'grid':
       return (
@@ -222,6 +239,12 @@ export const Leaf = ({ attributes, children, leaf }: any) => {
     );
   }
 
+  if (leaf.iframe){
+    children = (
+      <iframe src={leaf.link}></iframe>
+    );
+  }
+
   return <span {...attributes}>{children}</span>;
 };
 
@@ -298,6 +321,10 @@ export const LeafPlain = ({ attributes, children, leaf }: any) => {
     children = <a href={leaf.link}>{children}</a>;
   }
 
+  if(leaf.iframe){
+    children = <iframe src={leaf.link}></iframe>
+  }
+
   return children;
 };
 
@@ -327,6 +354,16 @@ export const ElementPlain = ({
       return <li>{children}</li>;
     case 'numbered-list':
       return <ol>{children}</ol>;
+    case 'iframe':
+      return children.length > 0 ? (
+        <div>
+          <img src={element.url} alt='Embedded image' />
+          {children}
+        </div>
+      ) : (
+        <img src={element.url} alt='Embedded image' />
+      );
+      //return <iframe src={element.url}></iframe>;
     case 'image':
       return children.length > 0 ? (
         <div>
