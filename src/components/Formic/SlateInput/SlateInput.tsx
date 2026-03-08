@@ -654,7 +654,7 @@ export const SlateInput: React.FC<Props> = (props) => {
               i18n={props.i18n}
               title={t['Insert iframe code']}
               //onSubmit={(url) => editor.addMark('link', url)} //TODO THIS IS WHERE ONSUBMIT IS 
-              onSubmit={(src) => insertImage(editor, src)}
+              onSubmit={(src) => insertIFrame(editor, src)}
               //format='iframe'
             />
             <ImageButton

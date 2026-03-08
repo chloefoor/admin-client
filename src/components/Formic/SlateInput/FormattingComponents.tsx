@@ -4,7 +4,7 @@ import { ReactEditor, useSlate } from 'slate-react';
 import type { SlateButtonProps } from '@ty/ui.ts';
 import { Button } from '@radix-ui/themes';
 import * as Dialog from '@radix-ui/react-dialog';
-import type { AVAEditor, ImageData, ImageSize } from '@ty/slate.ts';
+import type { AVAEditor, IFrameData, ImageData, ImageSize } from '@ty/slate.ts';
 import type { Translations } from '@ty/Types.ts';
 import { ToolbarTooltip } from './ToolbarTooltip.tsx';
 import { Editor } from 'slate';
@@ -59,7 +59,7 @@ export interface IFrameProps {
 
   i18n: Translations;
   icon?: React.FC;
-  onSubmit: (image: ImageData) => void;
+  onSubmit: (iframe: IFrameData) => void;
   title: string;
   hideButton?: boolean;
   open?: boolean;

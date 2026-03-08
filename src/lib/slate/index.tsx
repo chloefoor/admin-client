@@ -5,6 +5,7 @@ import {
 import { updateImage } from '@components/Formic/SlateInput/SlateInput.tsx';
 import { RTEColumn } from '@components/RTEColumn/RTEColumn.tsx';
 import { RTEImage } from '@components/RTEImage/RTEImage.tsx';
+import { RTEIFrame } from '@components/RTEIFrame/RTEIFrame.tsx';
 import { getTranslationsFromUrl } from '@i18n';
 import type { AVAEditor } from '@ty/slate.ts';
 import { type Element as SlateElement, Node, Text } from 'slate';
@@ -98,16 +99,17 @@ export const Element = ({
       console.log(element);
       console.log(element.url)
       return (
-        <div {...attributes} style={style} contentEditable={false}>
-          <RTEImage
+        //<iframe src={element.url}></iframe>
+        <div {...attributes} className="iframe" style={style} contentEditable={false}>
+          <RTEIFrame
             url={element.url}
             i18n={i18n}
-            caption={element.caption}
-            scale={element.scale || 100}
-            onChange={onChange}
-            popoverAnchor={popoverAnchor ? popoverAnchor : undefined}
-            element={element}
-            onUpdateImage={updateImage}
+            //caption={element.caption}
+            //scale={element.scale || 100}
+            //onChange={onChange}
+            //popoverAnchor={popoverAnchor ? popoverAnchor : undefined}
+            //element={element}
+            //onUpdateImage={updateImage}
             editor={editor ? (editor as AVAEditor) : undefined}
           />
           {children}
@@ -355,14 +357,8 @@ export const ElementPlain = ({
     case 'numbered-list':
       return <ol>{children}</ol>;
     case 'iframe':
-      return children.length > 0 ? (
-        <div>
-          <img src={element.url} alt='Embedded image' />
-          {children}
-        </div>
-      ) : (
-        <img src={element.url} alt='Embedded image' />
-      );
+      return <iframe src={element.url} ></iframe>;
+          
       //return <iframe src={element.url}></iframe>;
     case 'image':
       return children.length > 0 ? (

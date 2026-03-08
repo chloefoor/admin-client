@@ -29,7 +29,7 @@ export interface ImageData {
 
 export interface IFrameData {
   url: string;
-  size?: ImageSize;
+  //size?: ImageSize;
   //caption?: string;
 }
 
